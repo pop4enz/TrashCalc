@@ -36,7 +36,7 @@
                 android:layout_marginRight="16dp"
                 android:hint="..."
                 android:maxLines="1"
-                android:onClick="clickOperationsDisplay"
+                android:onClick="operationsDisplayClickHandler"
                 android:textColor="#757575"
                 android:textColorHint="#616161"
                 android:textSize="35sp" />
@@ -59,7 +59,7 @@
                 android:layout_marginRight="8dp"
                 android:hint="0"
                 android:maxLines="1"
-                android:onClick="clickNumberDisplay"
+                android:onClick="numberDisplayClickHandler"
                 android:textColor="#616161"
                 android:textColorHint="#616161"
                 android:textSize="65sp" />
@@ -75,24 +75,17 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <HorizontalScrollView
-            android:id="@+id/functionsHorizontalScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/numbersLinearLayout">
-
             <LinearLayout
                 android:id="@+id/firstLine"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/buttonSin"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="1dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
@@ -104,8 +97,8 @@
                     android:id="@+id/buttonCos"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="1dp"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
                     android:text="cos"
@@ -116,33 +109,33 @@
                     android:id="@+id/buttonTan"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
                     android:text="tan"
+                    android:layout_marginRight="1dp"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp" />
                 <Button
                     android:id="@+id/buttonLog"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
                     android:text="log"
+                    android:layout_marginRight="1dp"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp" />
                 <Button
                     android:id="@+id/buttonExp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
                     android:text="exp"
+                    android:layout_marginRight="1dp"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp" />
 
@@ -150,11 +143,11 @@
                     android:id="@+id/buttonBracketsOpen"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_effect_functions"
                     android:onClick="appendElement"
                     android:text="("
+                    android:layout_marginRight="1dp"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp" />
 
@@ -169,8 +162,6 @@
                     android:textColor="#FFFFFF"
                     android:textSize="20sp" />
             </LinearLayout>
-        </HorizontalScrollView>
-
 
         <LinearLayout
             android:id="@+id/secondLine"
@@ -372,7 +363,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_operators"
                 android:elevation="0dp"
-                android:onClick="clickButtonPI"
+                android:onClick="appendPI"
                 android:text="π"
                 android:textColor="#ffffff"
                 android:textSize="25sp" />
@@ -405,7 +396,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_numbers"
-                android:onClick="onEqual"
+                android:onClick="calculate"
                 android:text="="
                 android:textColor="#FFFFFF"
                 android:textSize="25sp" />
