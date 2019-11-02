@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final List<String> functions = Arrays.asList("sin", "cos", "tan", "ln", "log", "sqrt", "exp");
     private ClipboardManager clipboard;
     private ClipData clip;
-    private boolean calculationDone = false;
+    private Boolean calculationDone = false;
     private static final String ERROR = "Error";
 
     @Override
@@ -80,15 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void appendElement(View v) {
         Button buttonPressed = (Button) v;
-        String operator = buttonPressed.getText().toString();
+        String operand = buttonPressed.getText().toString();
         String operations = operationsDisplay.getText().toString();
         String numbers = numberDisplay.getText().toString();
 
+        if ("√".equals(operand)) {
+            operand = "sqrt";
+        }
         if (calculationDone) {
             calculationDone = false;
             if (ERROR.equals(numbers)) {
                 clearDisplays();
-                numbers = "";
                 operations = "";
                 lastToken = "";
             } else {
@@ -96,64 +98,52 @@ public class MainActivity extends AppCompatActivity {
                 operations = numbers;
             }
         }
-        if ("√".equals(operator)) {
-            operator = "sqrt";
-        }
-        if (isOperator(operator)) {
-            numberDisplay.setText(null);
+        if (isOperator(operand)) {
+            numberDisplay.setText("");
             if (isOperator(lastToken)) {
-                operationsDisplay.setText(operations.substring(0, operations.length() - 1) + operator);
-                lastToken = operator;
+                operationsDisplay.setText(StringUtils.chop(operations).concat(operand));
+                lastToken = operand;
             } else if (!"".equals(lastToken)) {
-                operationsDisplay.setText(operations + operator);
-                lastToken = operator;
+                operationsDisplay.append(operand);
+                lastToken = operand;
             }
-        } else if (".".equals(operator) && lastToken.equals(operator)) {
-            operationsDisplay.setText(operations.substring(0, operations.length() - 1));
-            numberDisplay.setText(numbers.substring(0, numbers.length() - 1));
-            lastToken = String.valueOf(operationsDisplay.getText().charAt(operations.length() - 2));
-        } else if (isFunction(operator)) {
-            lastToken = operator;
-            numberDisplay.append(operator + "(");
-            operationsDisplay.append(operator + "(");
+        } else if (isFunction(operand)) {
+            appendToDisplays(operand + "(");
+            lastToken = operand;
+        } else if (".".equals(operand) && lastToken.equals(operand)) {
+            Toast.makeText(MainActivity.this, "You already have dot on your screen", Toast.LENGTH_SHORT).show();
         } else {
-            operationsDisplay.setText(operations + operator);
-            numberDisplay.setText(numbers + operator);
-            lastToken = operator;
+            appendToDisplays(operand);
+            lastToken = operand;
         }
     }
 
     public void calculate(View v) {
-        numberDisplay.startAnimation((Animation) AnimationUtils
+        numberDisplay.startAnimation(AnimationUtils
                 .loadAnimation(this, R.anim.line_animation_out));
         Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.line_animation_in);
-        slideUp.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
         numberDisplay.startAnimation(slideUp);
         try {
             Expression expression = new ExpressionBuilder(operationsDisplay.getText().toString()).build();
             DecimalFormatSymbols separators = new DecimalFormatSymbols(Locale.GERMAN);
             separators.setDecimalSeparator('.');
             separators.setGroupingSeparator(' ');
-            double value = expression.evaluate();
+            Double value = expression.evaluate();
             numberDisplay.setText(new DecimalFormat("0.########", separators).format(value));
         } catch (Exception e) {
             numberDisplay.setText(ERROR);
         }
         calculationDone = true;
+    }
+
+    private void appendToDisplays(String value) {
+        operationsDisplay.append(value);
+        numberDisplay.append(value);
+    }
+
+    private void clearDisplays() {
+        numberDisplay.setText("");
+        operationsDisplay.setText("");
     }
 
     public void appendPI(View v) {
@@ -180,14 +170,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean isFunction(String s) {
-        if (s.endsWith("(")) {
-            s = s.substring(s.length() - 1);
-        }
         return functions.contains(s);
-    }
-
-    private void clearDisplays() {
-        numberDisplay.setText("");
-        operationsDisplay.setText("");
     }
 }
