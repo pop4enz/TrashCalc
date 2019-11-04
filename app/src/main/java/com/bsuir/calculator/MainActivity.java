@@ -40,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         numberDisplay = findViewById(R.id.displayNumber);
         operationsDisplay = findViewById(R.id.displayOperationNumber);
-        if (savedInstanceState != null) {
-            numberDisplay.setText(savedInstanceState.getString("numbers"));
-            operationsDisplay.setText(savedInstanceState.getString("operations"));
-            lastToken = savedInstanceState.getString("lastToken");
-        }
         Button buttonCE = findViewById(R.id.buttonCE);
         buttonCE.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -71,11 +66,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        {
             savedInstanceState.putString("operations", operationsDisplay.getText().toString());
             savedInstanceState.putString("numbers", numberDisplay.getText().toString());
             savedInstanceState.putString("lastToken", lastToken);
-        }
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        numberDisplay.setText(savedInstanceState.getString("numbers"));
+        operationsDisplay.setText(savedInstanceState.getString("operations"));
+        lastToken = savedInstanceState.getString("lastToken");
     }
 
     public void appendElement(View v) {
